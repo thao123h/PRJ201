@@ -5,6 +5,8 @@
 
 package control;
 
+import dal.CartDAO;
+import dal.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,12 +14,17 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import model.Cart;
+import model.CartItem;
+import model.Product;
+import model.User;
 
 /**
  *
  * @author asus
  */
-@WebServlet(name="AddToCardServlet", urlPatterns={"/addToCard"})
+@WebServlet(name="AddToCardServlet", urlPatterns={"/addToCart"})
 public class AddToCardServlet extends HttpServlet {
    
     /** 
@@ -55,8 +62,45 @@ public class AddToCardServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
-    } 
+//        processRequest(request, response);
+  HttpSession session = request.getSession();
+   User user = (User)session.getAttribute("user");
+   int productId = 0;
+   int quantity = 0;
+   PrintWriter out = response.getWriter();
+   out.println(request.getParameter("productId"));
+   out.println(request.getParameter("quantity"));
+   
+        try {
+            productId = Integer.parseInt(request.getParameter("productId"));
+            quantity = Integer.parseInt(request.getParameter("quantity"));
+        } catch (NumberFormatException e) {
+        }
+   
+   if(user == null){
+       session.setAttribute("loginToBuy", "logintobuy");
+        session.setAttribute("productIDToBuy", productId);
+       response.sendRedirect("login");
+   }
+   else {
+       CartDAO cd = new CartDAO();
+       Cart c = cd.getCardByUserID(user.getId());
+       if ( c == null){
+           cd.insertCart(user.getId());
+           c = cd.getCardByUserID(user.getId());
+       }
+       ProductDAO  pd = new ProductDAO();
+       Product p = pd.getProductByID(productId);
+       cd.insertCartItem(new CartItem(0, c,p, quantity,p.getOproduct().getListedPrice()*quantity ));
+       session.setAttribute("addCardSuccess", "Đã thêm vào giỏ hàng !");
+       response.sendRedirect("detail?id="+productId);
+       
+       
+   }
+    }
+ 
+  
+     
 
     /** 
      * Handles the HTTP <code>POST</code> method.
@@ -68,7 +112,40 @@ public class AddToCardServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+//        processRequest(request, response);
+  HttpSession session = request.getSession();
+   User user = (User)session.getAttribute("user");
+   int productId = 0;
+   int quantity = 0;
+        try {
+            productId = Integer.parseInt(request.getParameter("productId"));
+            quantity = Integer.parseInt(request.getParameter("quantity"));
+        } catch (Exception e) {
+        }
+   
+   if(user == null){
+       session.setAttribute("loginToBuy", "logintobuy");
+        session.setAttribute("productIDToBuy", productId);
+       response.sendRedirect("login");
+   }
+   else {
+       CartDAO cd = new CartDAO();
+       Cart c = cd.getCardByUserID(user.getId());
+       if ( c == null){
+           cd.insertCart(user.getId());
+           c = cd.getCardByUserID(user.getId());
+       }
+       ProductDAO  pd = new ProductDAO();
+       Product p = pd.getProductByID(productId);
+       cd.insertCartItem(new CartItem(0, c,p, quantity,p.getOproduct().getListedPrice()*quantity ));
+       session.setAttribute("addCardSuccess", "Đã thêm vào giỏ hàng");
+       response.sendRedirect("detail?id="+productId);
+       
+       
+   }
+       
+  
+
     }
 
     /** 

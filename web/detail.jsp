@@ -350,7 +350,7 @@
                         <!-- Nút mua hàng -->
                         <div class="action-buttons">
                             <form action="addToCart"  style="display: inline;">
-                                <input type="hidden" name="productId" value="${product.oproduct.id}">
+                                <input type="hidden" name="productId" value="${product.id}">
                                 <input type="hidden" name="quantity" id="cartQuantity">
                                 <button type="submit" class="add-to-cart" onclick="setQuantity('cart')">
                                     <i style="padding: 1px 4px;" class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng
@@ -358,13 +358,18 @@
                             </form>
                             
                             <form action="buy" style="display: inline;">
-                                <input type="hidden" name="productId" value="${product.oproduct.id}">
+                                <input type="hidden" name="productId" value="${product.id}">
                                 <input type="hidden" name="quantity" id="buyQuantity">
                                 <button type="submit" class="buy-now" onclick="setQuantity('buy')">
                                     Mua ngay
                                 </button>
                             </form>
                         </div>
+                                <c:if test="${sessionScope.addCardSuccess != null}">
+                                    <h4 style="padding: 10px 0">${sessionScope.addCardSuccess }</h4>
+                                    <c:remove scope="session" var="addCardSuccess"></c:remove>
+                                </c:if>
+                               
                     </div>
                 </div>
             </div>

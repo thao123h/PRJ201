@@ -438,21 +438,13 @@
             </c:forEach>
         </div>
     </div>
-<c:if test="${sessionScope.msg != null}">
-        <script>
-                 alert("${sessionScope.msg}");
-        </script>
 
-        <c:remove var="msg" scope="session"/>
-    </c:if>
+
+      
     <%@include file="footer.jsp" %>
  
- <c:if test="${sessionScope.msg != null}">
-        <script>
-            alert("${sessionScope.msg}");
-        </script>
-        <c:remove var="msg" scope="session"/>
-    </c:if>
+ 
+    
     <!-- Thêm modal vào cuối body trước các script -->
     <c:forEach items="${pageContext.request.cookies}" var="c">
         <c:if test="${c.getName() != null && c.getName().equals('email')}">

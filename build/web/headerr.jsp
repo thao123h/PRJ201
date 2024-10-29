@@ -249,7 +249,7 @@
                 <a href="profile.jsp" style="color:black;font-weight: bold; font-size: large;">${sessionScope.user.fullname}</a>
             </c:if>
             <c:if test="${sessionScope.user==null}">
-                <a href="#" class="login-trigger"><i class="far fa-solid fa-user"></i></a>
+                <a href="login"><i class="far fa-solid fa-user"></i></a>
             </c:if>
             <a href="#"><i class="fas fa-heart"></i></a>
             <a href="#"><i class="fas fa-solid fa-cart-shopping"></i></a>

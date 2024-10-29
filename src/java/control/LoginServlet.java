@@ -57,35 +57,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        processRequest(request, response);
-        String email = request.getParameter("email");
-        String pass = request.getParameter("password");
-        UserDAO ud = new UserDAO();
-        User u = ud.getUserByEmailPassword(email, pass);
-        if (u != null) {
-            Cookie cemail = new Cookie("email", email);
-            Cookie cpass = new Cookie("pass", pass);
-
-            cemail.setMaxAge(24 * 60 * 60);
-            cpass.setMaxAge(24 * 60 * 60);
-
-            response.addCookie(cemail);
-            response.addCookie(cpass);
-            cemail.setMaxAge(0);
-            cpass.setMaxAge(0);
-
-            HttpSession session = request.getSession();
-
-            session.setAttribute("user", u);
-            session.setAttribute("msg", "Đăng nhập thành công");
-
-        } else {
-            HttpSession session = request.getSession();
-            session.setAttribute("msg", "Tài khoản hoặc mật khẩu không chính xác. Vui lòng kiểm tra lại!");
-
-        }
-       response.sendRedirect("home");
-
+        request.getRequestDispatcher("login.jsp").forward(request, response);
     }
 
     /**
@@ -104,17 +76,31 @@ public class LoginServlet extends HttpServlet {
         UserDAO ud = new UserDAO();
         User u = ud.getUserByEmailPassword(email, pass);
         HttpSession session = request.getSession();
-        
+
         if (u != null) {
             // Đăng nhập thành công
+            Cookie cname = new Cookie("email", email);
+            Cookie cpass = new Cookie("pass", pass);
+
+            cname.setMaxAge(24 * 60 * 60);
+            cpass.setMaxAge(24 * 60 * 60);
+
+            response.addCookie(cname);
+            response.addCookie(cpass);
+
             session.setAttribute("user", u);
-            session.setAttribute("msg", "Đăng nhập thành công!");
+       
+           if (session.getAttribute("loginToBuy")!= null){
+               int productID =(int) session.getAttribute("productIDToBuy");
+                response.sendRedirect("detail?id="+ productID);
+           }
+           else
+            response.sendRedirect("home");
         } else {
             // Đăng nhập thất bại
             session.setAttribute("msg", "Email hoặc mật khẩu không chính xác!");
+            response.sendRedirect("login");
         }
-        
-        response.sendRedirect("home");
     }
 
     /**
@@ -128,4 +114,3 @@ public class LoginServlet extends HttpServlet {
     }// </editor-fold>
 
 }
-
