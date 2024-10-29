@@ -349,10 +349,21 @@
                         
                         <!-- Nút mua hàng -->
                         <div class="action-buttons">
-                            <button class="add-to-cart" onclick="addToCart()">
-                                <i style="    padding: 1px 4px;" class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng
-                            </button>
-                            <button class="buy-now" onclick="buyNow()">Mua ngay</button>
+                            <form action="addToCart"  style="display: inline;">
+                                <input type="hidden" name="productId" value="${product.oproduct.id}">
+                                <input type="hidden" name="quantity" id="cartQuantity">
+                                <button type="submit" class="add-to-cart" onclick="setQuantity('cart')">
+                                    <i style="padding: 1px 4px;" class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng
+                                </button>
+                            </form>
+                            
+                            <form action="buy" style="display: inline;">
+                                <input type="hidden" name="productId" value="${product.oproduct.id}">
+                                <input type="hidden" name="quantity" id="buyQuantity">
+                                <button type="submit" class="buy-now" onclick="setQuantity('buy')">
+                                    Mua ngay
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -404,14 +415,13 @@
                 input.value = parseInt(input.value) + 1;
             }
 
-            function addToCart() {
+            function setQuantity(type) {
                 var quantity = document.getElementById('quantity').value;
-                // Thêm code xử lý thêm vào giỏ hàng
-            }
-
-            function buyNow() {
-                var quantity = document.getElementById('quantity').value;
-                // Thêm code xử lý mua ngay
+                if(type === 'cart') {
+                    document.getElementById('cartQuantity').value = quantity;
+                } else if(type === 'buy') {
+                    document.getElementById('buyQuantity').value = quantity;
+                }
             }
 
             function toggleHeart(element) {
