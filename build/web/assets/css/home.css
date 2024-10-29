@@ -1,0 +1,139 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this template
+*/
+/* 
+    Created on : Oct 9, 2024, 5:26:02 PM
+    Author     : asus
+*/
+.body{
+    overflow: hidden;
+    background-color:white !important;
+    box-sizing: border-box;
+
+}
+
+.left-image img{
+    width:100%;
+    height: 500px;
+}
+.infor-shop{
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: black !important;
+    overflow: hidden;
+
+    font-family: "Roboto", sans-serif;
+
+    padding-right:20px;
+}
+.carousel-item{
+     max-width: 100%; /* Đảm bảo ảnh không to hơn vùng chứa */
+  height: auto; /* Giữ nguyên tỉ lệ chiều cao theo chiều rộng */
+  display: block; /* Loại bỏ khoảng trống xung quanh ảnh */
+  object-fit: cover; 
+}
+.right-infor{
+    padding-top:100px ;
+    font-weight: bolder;
+
+    text-align: justify;
+    line-height: 1.6;
+    font-size: 16px;
+    letter-spacing: 1px;
+    word-spacing: 2px;
+    padding-left:15px;
+
+}
+.container-fluid{
+    padding-left: 0;
+    padding-right: 0;
+}
+.carousel-inner img {
+    width: 100%;
+    height: 560px;
+}
+.carousel-item {
+    transition: transform 0.1s ease-in-out; /* Chỉnh thành 0.7 giây để chuyển nhanh hơn */
+}
+.good_items img{
+    width:100%;
+    height:400px;
+}
+.new_items img{
+    width:100%;
+    height:400px;
+}
+.container h2{
+    text-align: center;
+    padding-top:100px;
+    padding-bottom: 50px;
+}
+.modall{
+    position: fixed;
+    top:0;
+    right:0;
+    bottom:0;
+    left:0;
+    z-index: 1666;
+    display: flex;
+    display: none;
+
+
+}
+.modall_overlay{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.3);
+
+
+
+
+}
+.my-5 {
+    margin-bottom: 0rem !important;
+}
+.modall_body{
+    width: 500px;
+    height:450px;
+    background-color: white;
+    margin: auto;
+    position: relative;
+    z-index: 2000;
+}
+.auth_form{
+    padding: 40px 15px ;
+    font-weight: 500;
+
+}
+.title{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin-bottom: -12px;
+
+
+}
+.auth_form body{
+    margin-top:-10px;
+}
+.auth_form input{
+    length: 15px;
+    width: 100%;
+    padding: 5px 8px;
+    margin-top:2px;
+    margin-bottom: 10px;
+
+}
+.closee{
+    float: right;
+    margin-top: -41px;
+    margin-right: -27px;
+    z-index: 99999;
+}
+
+
+
