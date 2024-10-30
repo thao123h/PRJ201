@@ -4,17 +4,18 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/MyFirstWebsite/web/cart.jsp</file>
-            <file>file:/D:/MyFirstWebsite/web/home.jsp</file>
             <file>file:/D:/MyFirstWebsite/src/java/model/Cart.java</file>
-            <file>file:/D:/MyFirstWebsite/web/login.jsp</file>
+            <file>file:/D:/MyFirstWebsite/src/java/control/CheckoutServlet.java</file>
             <file>file:/D:/MyFirstWebsite/src/java/model/CartItem.java</file>
             <file>file:/D:/MyFirstWebsite/src/java/control/AddToCardServlet.java</file>
             <file>file:/D:/MyFirstWebsite/src/java/model/Category.java</file>
+            <file>file:/D:/MyFirstWebsite/src/java/dal/AddressDAO.java</file>
+            <file>file:/D:/MyFirstWebsite/src/java/model/User.java</file>
+            <file>file:/D:/MyFirstWebsite/web/checkout.jsp</file>
             <file>file:/D:/MyFirstWebsite/web/add.jsp</file>
             <file>file:/D:/MyFirstWebsite/src/java/control/LoginServlet.java</file>
-            <file>file:/D:/MyFirstWebsite/web/headerr.jsp</file>
             <file>file:/D:/MyFirstWebsite/src/java/control/CartServlet.java</file>
-            <file>file:/D:/MyFirstWebsite/web/dashboard.jsp</file>
+            <file>file:/D:/MyFirstWebsite/src/java/control/ChangeQuantityAndDeleteCartItemServlet.java</file>
             <file>file:/D:/MyFirstWebsite/src/java/dal/CartDAO.java</file>
         </group>
     </open-files>

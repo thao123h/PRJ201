@@ -15,7 +15,7 @@
         <link rel="stylesheet" href="./assets/bootstrap-4.6.2-dist/css/bootstrap.min.css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
         <style>
-            .cart-container {
+           .cart-container {
                 margin-top: 130px;
                 padding: 30px 0;
             }
@@ -117,7 +117,23 @@
 
             .checkout-btn:hover {
                 background: #e798b2;
+                text-decoration: none;
             }
+            .checkout-btn a{
+            
+  text-decoration: none; /* Xóa gạch chân */
+  color: inherit; /* Giữ nguyên màu ban đầu */
+ 
+}
+
+ .checkout-btn a:hover {
+ color:black;
+  text-decoration: none; /* Xóa gạch chân khi hover */
+}
+
+            }
+            
+            
         </style>
     </head>
     <body>
