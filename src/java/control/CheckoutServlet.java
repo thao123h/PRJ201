@@ -62,11 +62,13 @@ public class CheckoutServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
 //        processRequest(request, response);
-   
+   int cartID = 0;
     HttpSession session = request.getSession();
-    int cartID =(int) session.getAttribute("cartID");
+    if(session.getAttribute("user")!=null);
+     cartID =(int) session.getAttribute("cartID");
     CartDAO cd = new CartDAO();
     List<CartItem> list = cd.getAllCartItemsByCardID(cartID);
+    request.setAttribute("list", list);
     request.getRequestDispatcher("checkout.jsp").forward(request, response);
     
     
