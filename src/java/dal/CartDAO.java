@@ -61,7 +61,7 @@ public class CartDAO extends DBContext {
 
     public void insertCartItem(CartItem item) {
         String sql = "insert into CartItems (cartID,productID,quantity,price) values (?,?,?,?)";
-        if (item != null) {
+         
             try {
                 PreparedStatement st = connection.prepareStatement(sql);
                 st.setInt(1, item.getCart().getId());
@@ -71,6 +71,28 @@ public class CartDAO extends DBContext {
                 st.executeUpdate();
             } catch (SQLException e) {
             }
+        
+    }
+    public void updateQuantity ( int quantity, int idc){
+        String sql = "update CartItems set quantity=? where id=?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, quantity);
+            st.setInt(2, idc);
+            st.executeUpdate();
+                    
+        } catch (Exception e) {
+        }
+    }
+    public void deteteCartItem ( int id){
+        String sql = "delete from CartItems where id = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+         
+            st.executeUpdate();
+                    
+        } catch (Exception e) {
         }
     }
 
@@ -100,5 +122,7 @@ public class CartDAO extends DBContext {
         CartDAO cd = new CartDAO();
 //        System.out.println(cd.getCardByUserID(5));
         System.out.println(cd.getAllCartItemsByCardID(8).size());
+      cd.updateQuantity(4, 35);
+        
     }
 }

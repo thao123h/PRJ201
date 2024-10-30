@@ -67,9 +67,7 @@ public class AddToCardServlet extends HttpServlet {
    User user = (User)session.getAttribute("user");
    int productId = 0;
    int quantity = 0;
-   PrintWriter out = response.getWriter();
-   out.println(request.getParameter("productId"));
-   out.println(request.getParameter("quantity"));
+   
    
         try {
             productId = Integer.parseInt(request.getParameter("productId"));
@@ -84,7 +82,10 @@ public class AddToCardServlet extends HttpServlet {
    }
    else {
        CartDAO cd = new CartDAO();
-       Cart c = cd.getCardByUserID((int)(session.getAttribute("cartID")));  
+        int cardID = 0;
+        cardID = (int)(session.getAttribute("cartID"));
+//       Cart c = cd.getCardByCardID(cardID);  
+Cart c = cd.getCardByUserID(user.getId());
        ProductDAO  pd = new ProductDAO();
        Product p = pd.getProductByID(productId);
        cd.insertCartItem(new CartItem(0, c,p, quantity,p.getOproduct().getListedPrice()*quantity ));

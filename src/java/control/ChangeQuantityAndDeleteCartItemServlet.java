@@ -5,7 +5,6 @@
 package control;
 
 import dal.CartDAO;
-import dal.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,19 +12,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.util.List;
-import model.Cart;
-import model.CartItem;
-import model.Product;
-import model.User;
 
 /**
  *
  * @author asus
  */
-@WebServlet(name = "CardServlet", urlPatterns = {"/cart"})
-public class CartServlet extends HttpServlet {
+@WebServlet(name = "ChangeQuantityAndDeleteCartItemServlet", urlPatterns = {"/cartitem"})
+public class ChangeQuantityAndDeleteCartItemServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,10 +37,10 @@ public class CartServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CardServlet</title>");
+            out.println("<title>Servlet ChangeQuantityAndDeleteCartItemServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CardServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ChangeQuantityAndDeleteCartItemServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -64,26 +57,40 @@ public class CartServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        CartDAO cd = new CartDAO();
-        HttpSession session = request.getSession();
+        throws ServletException, IOException {
+    int quantity = 0;
+    int idc = 0;
+    int deleteid = 0;
+    CartDAO cd = new CartDAO();
 
-        User user = (User) session.getAttribute("user");
+    try {
+        String quantityParam = request.getParameter("quantity");
+        String idcParam = request.getParameter("idc");
+        String deleteidParam = request.getParameter("deleteid");
 
-        if (user == null) {
-            response.sendRedirect("login");
-        } else {
-           int cart = (int)session.getAttribute("cartID");
-            List<CartItem> list = cd.getAllCartItemsByCardID(cart);
-            request.setAttribute("list", list);
-            int sl = 0;
-            sl = list.size();
-            request.setAttribute("sl", sl);
-            request.getRequestDispatcher("cart.jsp").forward(request, response);
-
+        if (quantityParam != null) {
+            quantity = Integer.parseInt(quantityParam);
+        }
+        if (idcParam != null) {
+            idc = Integer.parseInt(idcParam);
+        }
+        if (deleteidParam != null) {
+            deleteid = Integer.parseInt(deleteidParam);
         }
 
+        if (quantity != 0 && idc != 0) {
+            cd.updateQuantity(quantity, idc);
+        }
+        if (deleteid != 0) {
+            cd.deteteCartItem(deleteid);
+        }
+
+        response.sendRedirect("cart");
+    } catch (Exception e) {
+        e.printStackTrace(); // Log the exception for debugging
     }
+}
+
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -96,8 +103,7 @@ public class CartServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        processRequest(request, response);
-
+        processRequest(request, response);
     }
 
     /**

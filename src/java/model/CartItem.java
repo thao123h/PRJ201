@@ -35,7 +35,7 @@ public class CartItem {
         return product;
     }
 
-    public void setProductID(Product productID) {
+    public void setProduct(Product productID) {
         this.product = productID;
     }
 
@@ -58,10 +58,10 @@ public class CartItem {
     public CartItem() {
     }
 
-    public CartItem(int id, Cart cart, Product productID, int quantity, double price) {
+    public CartItem(int id, Cart cart, Product product, int quantity, double price) {
         this.id = id;
         this.cart = cart;
-        this.product = productID;
+        this.product = product;
         this.quantity = quantity;
         this.price = price;
     }
