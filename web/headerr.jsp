@@ -252,7 +252,7 @@
                 <a href="login"><i class="far fa-solid fa-user"></i></a>
             </c:if>
             <a href="#"><i class="fas fa-heart"></i></a>
-            <a href="#"><i class="fas fa-solid fa-cart-shopping"></i></a>
+            <a href="cart"><i class="fas fa-solid fa-cart-shopping"></i></a>
           </div>
           <ul class="navbar-nav">
             <li class="nav-item">

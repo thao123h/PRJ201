@@ -45,6 +45,7 @@ public class DAOTokenForget extends DBContext {
         }
         return null;
     }
+    
 
     public boolean updateStatus(TokenForgetPassword tokenForget) {
         String sql = "UPDATE tokenForgetPassword SET isUsed = ? WHERE token = ?";

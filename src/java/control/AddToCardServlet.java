@@ -84,11 +84,7 @@ public class AddToCardServlet extends HttpServlet {
    }
    else {
        CartDAO cd = new CartDAO();
-       Cart c = cd.getCardByUserID(user.getId());
-       if ( c == null){
-           cd.insertCart(user.getId());
-           c = cd.getCardByUserID(user.getId());
-       }
+       Cart c = cd.getCardByUserID((int)(session.getAttribute("cartID")));  
        ProductDAO  pd = new ProductDAO();
        Product p = pd.getProductByID(productId);
        cd.insertCartItem(new CartItem(0, c,p, quantity,p.getOproduct().getListedPrice()*quantity ));
@@ -113,40 +109,12 @@ public class AddToCardServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
 //        processRequest(request, response);
-  HttpSession session = request.getSession();
-   User user = (User)session.getAttribute("user");
-   int productId = 0;
-   int quantity = 0;
-        try {
-            productId = Integer.parseInt(request.getParameter("productId"));
-            quantity = Integer.parseInt(request.getParameter("quantity"));
-        } catch (Exception e) {
-        }
-   
-   if(user == null){
-       session.setAttribute("loginToBuy", "logintobuy");
-        session.setAttribute("productIDToBuy", productId);
-       response.sendRedirect("login");
-   }
-   else {
-       CartDAO cd = new CartDAO();
-       Cart c = cd.getCardByUserID(user.getId());
-       if ( c == null){
-           cd.insertCart(user.getId());
-           c = cd.getCardByUserID(user.getId());
-       }
-       ProductDAO  pd = new ProductDAO();
-       Product p = pd.getProductByID(productId);
-       cd.insertCartItem(new CartItem(0, c,p, quantity,p.getOproduct().getListedPrice()*quantity ));
-       session.setAttribute("addCardSuccess", "Đã thêm vào giỏ hàng");
-       response.sendRedirect("detail?id="+productId);
-       
-       
+ 
    }
        
   
 
-    }
+    
 
     /** 
      * Returns a short description of the servlet.

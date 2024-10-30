@@ -11,12 +11,9 @@ package model;
 public class CartItem {
     int id;
     Cart cart;
- Product product;
+ Product  product;
     int quantity;
     double price;
-
-    public CartItem() {
-    }
 
     public int getId() {
         return id;
@@ -38,8 +35,8 @@ public class CartItem {
         return product;
     }
 
-    public void setProduct(Product productID) {
-        this.product= productID;
+    public void setProductID(Product productID) {
+        this.product = productID;
     }
 
     public int getQuantity() {
@@ -51,11 +48,14 @@ public class CartItem {
     }
 
     public double getPrice() {
-        return  price;
+        return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
+    }
+
+    public CartItem() {
     }
 
     public CartItem(int id, Cart cart, Product productID, int quantity, double price) {
@@ -65,7 +65,7 @@ public class CartItem {
         this.quantity = quantity;
         this.price = price;
     }
-    
-            
-    
+
+   
+   
 }

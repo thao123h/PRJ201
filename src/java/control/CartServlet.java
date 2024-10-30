@@ -1,25 +1,31 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ */
 package control;
 
 import dal.CartDAO;
-import dal.UserDAO;
+import dal.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.List;
 import model.Cart;
+import model.CartItem;
+import model.Product;
 import model.User;
 
 /**
  *
  * @author asus
  */
-@WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
-public class LoginServlet extends HttpServlet {
+@WebServlet(name = "CardServlet", urlPatterns = {"/cart"})
+public class CartServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +44,10 @@ public class LoginServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginServlet</title>");
+            out.println("<title>Servlet CardServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet CardServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,7 +65,24 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("login.jsp").forward(request, response);
+        CartDAO cd = new CartDAO();
+        HttpSession session = request.getSession();
+
+        User user = (User) session.getAttribute("user");
+
+        if (user == null) {
+            response.sendRedirect("login");
+        } else {
+           int cart = (int)session.getAttribute("cartID");
+            List<CartItem> list = cd.getAllCartItemsByCardID(cart);
+            request.setAttribute("list", list);
+            int sl = 0;
+            sl = list.size();
+            request.setAttribute("sl", sl);
+            request.getRequestDispatcher("cart.jsp").forward(request, response);
+
+        }
+
     }
 
     /**
@@ -73,42 +96,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String email = request.getParameter("email");
-        String pass = request.getParameter("password");
-        UserDAO ud = new UserDAO();
-        User u = ud.getUserByEmailPassword(email, pass);
-        HttpSession session = request.getSession();
-
-        if (u != null) {
-            // Đăng nhập thành công
-            Cookie cname = new Cookie("email", email);
-            Cookie cpass = new Cookie("pass", pass);
-
-            cname.setMaxAge(24 * 60 * 60);
-            cpass.setMaxAge(24 * 60 * 60);
-
-            response.addCookie(cname);
-            response.addCookie(cpass);
-
-            session.setAttribute("user", u);
-            CartDAO cd = new CartDAO();
-            Cart c = cd.getCardByUserID(u.getId());
-            if (c == null) {
-                cd.insertCart(u.getId());
-                c = cd.getCardByUserID(u.getId());
-            }
-            session.setAttribute("cartID", c.getId());
-            if (session.getAttribute("loginToBuy") != null) {
-                int productID = (int) session.getAttribute("productIDToBuy");
-                response.sendRedirect("detail?id=" + productID);
-            } else {
-                response.sendRedirect("home");
-            }
-        } else {
-            // Đăng nhập thất bại
-            session.setAttribute("msg", "Email hoặc mật khẩu không chính xác!");
-            response.sendRedirect("login");
-        }
+        processRequest(request, response);
     }
 
     /**

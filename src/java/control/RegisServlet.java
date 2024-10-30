@@ -4,6 +4,7 @@
  */
 package control;
 
+import dal.CartDAO;
 import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,6 +14,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import model.Cart;
 import model.User;
 
 /**
@@ -88,18 +90,25 @@ public class RegisServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 //        processRequest(request, response);
-String name = request.getParameter("name").toUpperCase();
-String email = request.getParameter("email");
-String phone = request.getParameter("phone");
-String address = request.getParameter("address");
-String pass = request.getParameter("pass");
-UserDAO ud = new UserDAO();
-User u = new User(0,name,email,phone,address,pass,"user");
-ud.insert(u);
-HttpSession session = request.getSession();
-session.setAttribute("user", u);
-session.setAttribute("success", "success");
-response.sendRedirect("home");
+        String name = request.getParameter("name").toUpperCase();
+        String email = request.getParameter("email");
+        String phone = request.getParameter("phone");
+        String address = request.getParameter("address");
+        String pass = request.getParameter("pass");
+        UserDAO ud = new UserDAO();
+        User u = new User(0, name, email, phone, address, pass, "user");
+        ud.insert(u);
+        HttpSession session = request.getSession();
+        session.setAttribute("user", u);
+        CartDAO cd = new CartDAO();
+        Cart c = cd.getCardByUserID(u.getId());
+        if (c == null) {
+            cd.insertCart(u.getId());
+            c = cd.getCardByUserID(u.getId());
+        }
+        session.setAttribute("cartID", c.getId());
+        session.setAttribute("success", "success");
+        response.sendRedirect("home");
     }
 
     /**
