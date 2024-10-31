@@ -7,6 +7,7 @@ package dal;
 import model.Order;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.List;
 import model.OrderDetail;
 import model.Product;
 import model.User;
@@ -34,7 +35,7 @@ public class OrderDAO extends DBContext {
     }
 
     public Order getOrderByUserID(int userID) {
-        String sql = "select * from Orders where userID = ?";
+        String sql = "select top 1 * from Orders where userID = ? order by orderDate desc";
         UserDAO ud = new UserDAO();
 
         try {
@@ -50,27 +51,35 @@ public class OrderDAO extends DBContext {
         return null;
     }
 
-    public void updateTotalMoneyInOrder(int oid) {
+       public void updateTotalMoneyInOrder(int oid) {
         int total = 0;
-        String sql = "select sum(totalMoney) as total from CartItems where orderID = ?";
-        String sql2 = "update Orders set totalMoney = ? where oid = ?";
+        String sql = "select sum(totalMoney) as total from OrderDetails where orderID = ?";
+        String sql2 = "update Orders set totalMoney = ? where id = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, oid);
-            ResultSet rs = st.executeQuery();
+            try {
+                   ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 total = rs.getInt("total");
             }
+            } catch (Exception e) {
+            }
         } catch (Exception e) {
         }
-        try {
+        try { 
+  
             PreparedStatement st2 = connection.prepareStatement(sql2);
             st2.setInt(1, total);
             st2.setInt(2, oid);
             st2.executeUpdate();
         } catch (Exception e) {
         }
-    }
+    
+       
+   
+}
+
 
     public void insertIntoOrderDetail(OrderDetail odetail) {
         String sql = "insert into OrderDetails(orderID,productID,num,totalMoney) values(?,?,?,?)";
@@ -86,14 +95,32 @@ public class OrderDAO extends DBContext {
         }
     }
 
+    public void insertListIntoOrderDetail(List<OrderDetail> list) {
+        String sql = "insert into OrderDetails(orderID,productID,num,totalMoney) values(?,?,?,?)";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            for (OrderDetail odetail : list) {
+                st.setInt(1, odetail.getOrder().getId());
+                st.setInt(2, odetail.getProduct().getId());
+                st.setInt(3, odetail.getNum());
+                st.setInt(4, odetail.getTotalMoney());
+                st.addBatch();
+            }
+
+            st.executeBatch();
+        } catch (Exception e) {
+        }
+    }
+
     public static void main(String[] args) {
         OrderDAO od = new OrderDAO();
         UserDAO ud = new UserDAO();
-        od.insertIntoOrder(new Order(0, ud.getUserByID(6), 0, 0));
-        od.getOrderByUserID(6);
-        System.out.println(od.getOrderByUserID(6));
+//        od.insertIntoOrder(new Order(0, ud.getUserByID(6), 0, 0));
+//        od.getOrderByUserID(6);
+//        System.out.println(od.getOrderByUserID(6));
         ProductDAO pd = new ProductDAO();
-    od.insertIntoOrderDetail(new OrderDetail(0, od.getOrderByUserID(6), pd.getProductByID(8), 0, 0));
+//        od.insertIntoOrderDetail(new OrderDetail(0, od.getOrderByUserID(6), pd.getProductByID(8), 0, 0));
+        od.updateTotalMoneyInOrder(8);
     }
 //    int id;
 //    Order order;
