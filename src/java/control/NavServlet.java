@@ -41,32 +41,41 @@ public class NavServlet extends HttpServlet {
         List<Product> list = new ArrayList<>();
         List<Field> leftnav = new ArrayList<>();
         String name = request.getParameter("name");
+        String keyword = request.getParameter("keyword");
         int from = 0;
-         int oid = 0;
+        int oid = 0;
         int to = 0;
-         HttpSession session = request.getSession();
-         List<Product> searchProducts = (List<Product>) session.getAttribute("searchProducts");
-         if (searchProducts !=null){
-             cid = searchProducts.get(0).getOproduct().getCategory();
-             
-         }
-
-        try {
-
-            cid = Integer.parseInt(request.getParameter("cid"));
-
-        } catch (Exception e) {
-            // Xử lý ngoại lệ (nếu cần)
+        HttpSession session = request.getSession();
+        List<Product> searchProducts = new ArrayList<>();
+        PrintWriter out = response.getWriter();
+//        out.println(keyword);
+        if (keyword != null) {
+            searchProducts = pd.getProductsByTitle(keyword);
         }
-        try {
-            from = Integer.parseInt(request.getParameter("from"));
+            
+        if ( !searchProducts.isEmpty()) {
+//              out.println(searchProducts.size());
+            cid = searchProducts.get(0).getOproduct().getCategory();
 
-        } catch (Exception e) {
+        } else {
+            try {
+
+                cid = Integer.parseInt(request.getParameter("cid"));
+
+            } catch (Exception e) {
+                // Xử lý ngoại lệ (nếu cần)
+            }
+            try {
+                from = Integer.parseInt(request.getParameter("from"));
+
+            } catch (Exception e) {
+            }
+            try {
+                to = Integer.parseInt(request.getParameter("to"));
+            } catch (Exception e) {
+            }
         }
-        try {
-            to = Integer.parseInt(request.getParameter("to"));
-        } catch (Exception e) {
-        }
+
         if (cid == 0) {
             leftnav.add(new Field("Túi tote", "nav?cid=1"));
             leftnav.add(new Field("Dây buộc tóc", "nav?cid=2"));
@@ -98,24 +107,23 @@ public class NavServlet extends HttpServlet {
         }
 
         String cname = "";
-        
+
         if (cid == 1) {
             cname = "Túi Tote";
         } else if (cid == 2) {
             cname = "Dây buộc tóc";
         } else if (cid == 3) {
             cname = "Vòng cổ";
-        }
-        else if (cid == 0) {
+        } else if (cid == 0) {
             cname = "Tất cả các sản phẩm";
         }
 
         if (cid == 0) {
             list = pd.getAllProducts();
-        } 
-        else if (searchProducts != null) list = searchProducts;
-        else {
-            list = pd.getProducts(cid, name, from, to,oid);
+        } else if ( !searchProducts.isEmpty()) {
+            list = searchProducts;
+        } else {
+            list = pd.getProducts(cid, name, from, to, oid);
         }
 
         request.setAttribute("cname", cname);

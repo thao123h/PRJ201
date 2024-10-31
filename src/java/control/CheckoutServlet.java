@@ -70,7 +70,7 @@ public class CheckoutServlet extends HttpServlet {
     List<CartItem> list = cd.getAllCartItemsByCardID(cartID);
     request.setAttribute("list", list);
     request.getRequestDispatcher("checkout.jsp").forward(request, response);
-    
+   
     
     
     

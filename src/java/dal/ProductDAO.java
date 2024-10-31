@@ -269,7 +269,7 @@ public class ProductDAO extends DBContext {
 
     public static void main(String[] args) {
         ProductDAO pr = new ProductDAO();
-        System.out.println(pr.getProducts(0, null, 0, 0, 8).size()
+        System.out.println(pr.getProducts(0, "vòng cổ", 0, 0, 0).size()
         );
 //        System.out.println(pr.getProducts().size());
     }

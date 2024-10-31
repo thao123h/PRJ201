@@ -96,15 +96,22 @@ public class RegisServlet extends HttpServlet {
         String address = request.getParameter("address");
         String pass = request.getParameter("pass");
         UserDAO ud = new UserDAO();
-        User u = new User(0, name, email, phone, address, pass, "user");
+        User u = new User(0, email, name, phone, address, pass, "user");
         ud.insert(u);
+          User u1 = ud.getUserByNameEmail(name, email);
         HttpSession session = request.getSession();
-        session.setAttribute("user", u);
+        session.setAttribute("user", u1);
         CartDAO cd = new CartDAO();
-        Cart c = cd.getCardByUserID(u.getId());
+      
+      
+          Cart c = new Cart();
+        if(u1 != null){
+               c = cd.getCardByUserID(u1.getId());
+        }
+      
         if (c == null) {
-            cd.insertCart(u.getId());
-            c = cd.getCardByUserID(u.getId());
+            cd.insertCart(u1.getId());
+            c = cd.getCardByUserID(u1.getId());
         }
         session.setAttribute("cartID", c.getId());
         session.setAttribute("success", "success");
