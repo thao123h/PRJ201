@@ -86,6 +86,11 @@ public class AddToCardServlet extends HttpServlet {
         cardID = (int)(session.getAttribute("cartID"));
 //       Cart c = cd.getCardByCardID(cardID);  
 Cart c = cd.getCardByUserID(user.getId());
+if ( c== null){
+    cd.insertCart(user.getId());
+    c = cd.getCardByUserID(user.getId());
+    session.setAttribute("cartID", c.getId());
+}
        ProductDAO  pd = new ProductDAO();
        Product p = pd.getProductByID(productId);
        cd.insertCartItem(new CartItem(0, c,p, quantity,p.getOproduct().getListedPrice()*quantity ));

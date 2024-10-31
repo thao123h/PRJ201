@@ -95,7 +95,17 @@ public class CartDAO extends DBContext {
         } catch (Exception e) {
         }
     }
-
+  public void deteteCartByUserID ( int id){
+        String sql = "delete from Carts where userID = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+         
+            st.executeUpdate();
+                    
+        } catch (Exception e) {
+        }
+    }
     public List<CartItem> getAllCartItemsByCardID(int cardID) {
         String sql = "select * from CartItems \n"
                 + "where cartID = ?";

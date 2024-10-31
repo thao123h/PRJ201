@@ -96,6 +96,7 @@ public class CheckoutServlet extends HttpServlet {
         List<CartItem> listItem = new ArrayList<>();
          PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
+         CartDAO cd = new CartDAO();
         User user = (User) session.getAttribute("user");
         Order order = new Order();
         if (user != null) {
@@ -103,7 +104,7 @@ public class CheckoutServlet extends HttpServlet {
 
             //insert into OrderDetail
             order = od.getOrderByUserID(user.getId());
-            CartDAO cd = new CartDAO();
+           
             listItem = cd.getAllCartItemsByCardID(cd.getCardByUserID(user.getId()).getId());
         }
 
@@ -122,7 +123,8 @@ public class CheckoutServlet extends HttpServlet {
 
         //update Order money
         od.updateTotalMoneyInOrder(order.getId());
-       
+        if (user!=null)   cd.deteteCartByUserID(user.getId());
+     
         out.println("xavc nhan ");
 
     }
