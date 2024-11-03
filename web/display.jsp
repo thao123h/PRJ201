@@ -251,7 +251,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                       <img src="${gp.thumbnail}" alt="${gp.oproduct.title}" />
                       <div class="product-actions">
                         <a
-                          href="buy?id=${gp.id}"
+                          href="buying?productId=${gp.id}&quantity=1"
                           class="action-button buy-now"
                           >Mua ngay</a
                         >

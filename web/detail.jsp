@@ -357,7 +357,7 @@
                                 </button>
                             </form>
                             
-                            <form action="buy" style="display: inline;">
+                            <form action="buying" style="display: inline;">
                                 <input type="hidden" name="productId" value="${product.id}">
                                 <input type="hidden" name="quantity" id="buyQuantity">
                                 <button type="submit" class="buy-now" onclick="setQuantity('buy')">
