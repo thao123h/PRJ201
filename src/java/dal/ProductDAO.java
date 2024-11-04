@@ -128,7 +128,32 @@ public class ProductDAO extends DBContext {
         return products;
 
     }
+    public List<Product> getProductsByOid(int id) {
+        List<Product> products = new ArrayList<>();
+        String sql = "select o.id as oid,o.categoryID, o.title, o.listedPrice,o.description,o.thumbnail"
+                + " as othumbnail,o.discount,o.finalPrice,p.id as pid,p.name as pname,p.stock,p.thumbnail as pthumbnail\n"
+                + "from OriginalProducts o  join  Products p on p.originalProductID = o.id where 1=1 ";
 
+        if (id != 0) {
+            sql += "and  o.id = " + id;
+        }
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                OriginalProduct o = new OriginalProduct(rs.getInt("oid"), rs.getInt("categoryID"),
+                        rs.getString("title"), rs.getInt("listedPrice"), rs.getString("description"),
+                        rs.getString("othumbnail"), rs.getDouble("discount"), rs.getDouble("finalPrice"));
+                products.add(new Product(rs.getInt("pid"), o, rs.getString("pname"), rs.getInt("stock"),
+                        rs.getString("pthumbnail")));
+            }
+
+        } catch (Exception e) {
+        }
+        return products;
+
+    }
     public List<Product> getProductsByTitle(String name) {
         List<Product> products = new ArrayList<>();
         String sql = "select o.id as oid,o.categoryID, o.title, o.listedPrice,o.description,o.thumbnail"
@@ -285,11 +310,44 @@ public class ProductDAO extends DBContext {
 //         }
 //     }
 //    
+    public void updateProduct(Product product){
+    String sql = "UPDATE Products SET name = ?, stock = ?, thumbnail = ? WHERE id = ?";
+    try {
+            PreparedStatement st = connection.prepareStatement(sql);
+        // Set parameters for the SQL statement
+        st.setString(1, product.getName());       // Assuming title is mapped to name
+        st.setInt(2, product.getStock());
+        st.setString(3, product.getThumbnail());  // Assuming thumbnail is a string (path or URL)
+        st.setInt(4, product.getId());
+
+       
+        st.executeUpdate();
+    } catch (Exception e) {
+        }   
+    }
+ public void insertProduct(Product product){
+    String sql = "insert into Products (originalProductID,name, stock, thumbnail) values (?,?,?)";
+    try {
+            PreparedStatement st = connection.prepareStatement(sql);
+        // Set parameters for the SQL statement
+        st.setInt(1, product.getOproduct().getId());
+        st.setString(2, product.getName());       // Assuming title is mapped to name
+        st.setInt(3, product.getStock());
+        st.setString(4, product.getThumbnail());  // Assuming thumbnail is a string (path or URL)
+     
+
+       
+        st.executeUpdate();
+    } catch (Exception e) {
+        }   
+    }
 
     public static void main(String[] args) {
         ProductDAO pr = new ProductDAO();
-        System.out.println(pr.getProducts(0, "vòng cổ", 0, 0, 0).size()
+        System.out.println(pr.getProductsByOid(5).size()
         );
+//        pr.insertProduct(new Product(0, oProduct, name, 0, thumbnail));
+//        pr.updateProduct(new Product(4, new, "màu nâu", 30,"./assets/images/tuitote/m21nau.webp"));
 //        System.out.println(pr.getProducts().size());
     }
 

@@ -3,24 +3,39 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/ProjectPRJ/MyFirstWebsite/web/updateOProduct.jsp</file>
+            <file>file:/D:/ProjectPRJ/MyFirstWebsite/web/update.jsp</file>
+            <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/model/User.java</file>
             <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/model/OrderDetail.java</file>
             <file>file:/D:/ProjectPRJ/MyFirstWebsite/web/footer.jsp</file>
+            <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/control/DeleteOp.java</file>
             <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/model/OriginalProduct.java</file>
-            <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/control/LoginServlet.java</file>
             <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/control/SearchServlet.java</file>
-            <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/control/dashboard.java</file>
+            <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/control/ProductDetailAdmin.java</file>
             <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/control/BuyingServlet.java</file>
+            <file>file:/D:/ProjectPRJ/MyFirstWebsite/web/headerr.jsp</file>
+            <file>file:/D:/ProjectPRJ/MyFirstWebsite/web/detailAdmin.jsp</file>
+            <file>file:/D:/ProjectPRJ/MyFirstWebsite/web/WEB-INF/web.xml</file>
+            <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/dal/OrderDAO.java</file>
+            <file>file:/D:/ProjectPRJ/MyFirstWebsite/web/cart.jsp</file>
+            <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/control/DeleteServlet.java</file>
+            <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/model/Product.java</file>
+            <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/dal/DAOTokenForget.java</file>
+            <file>file:/D:/ProjectPRJ/MyFirstWebsite/web/detail.jsp</file>
+            <file>file:/D:/ProjectPRJ/MyFirstWebsite/web/updateOProduct.jsp</file>
+            <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/control/NavServlet.java</file>
+            <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/control/AddServlet.java</file>
+            <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/control/LoginServlet.java</file>
+            <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/control/dashboard.java</file>
             <file>file:/D:/ProjectPRJ/MyFirstWebsite/web/dashboard.jsp</file>
             <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/control/CheckoutServlet.java</file>
-            <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/dal/OrderDAO.java</file>
+            <file>file:/D:/ProjectPRJ/MyFirstWebsite/web/updateProduct.jsp</file>
+            <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/control/UpdateProduct.java</file>
+            <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/control/AddOProduct.java</file>
             <file>file:/D:/ProjectPRJ/MyFirstWebsite/web/addOProduct.jsp</file>
             <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/model/Order.java</file>
             <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/dal/DBContext.java</file>
             <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/dal/ProductDAO.java</file>
             <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/control/UpdateServlet.java</file>
-            <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/dal/DAOTokenForget.java</file>
-            <file>file:/D:/ProjectPRJ/MyFirstWebsite/web/detail.jsp</file>
             <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/dal/UserDAO.java</file>
             <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/dal/OriginalProductDAO.java</file>
             <file>file:/D:/ProjectPRJ/MyFirstWebsite/web/profile.jsp</file>
