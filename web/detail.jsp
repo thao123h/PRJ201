@@ -388,7 +388,7 @@
                             <div class="related-product-image">
                                 <img src="${rp.thumbnail}" alt="${rp.oproduct.title}">
                                 <div class="product-actions">
-                                    <a href="buy?id=${rp.id}" class="action-button buy-now">Mua ngay</a>
+                                    <a href="buying?id=${rp.id}&quantity=1" class="action-button buy-now">Mua ngay</a>
                                     <a href="detail?id=${rp.id}" class="action-button view-detail">Xem chi tiết</a>
                                 </div>
                             </div>

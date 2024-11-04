@@ -15,53 +15,64 @@
     </head>
     <body style =" background-color: #f4b8cc " >
         <h1>ALL PRODUCTS</h1>
+
         <table border="1">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Image</th>
+                    <th>Category</th>
+                    <th>Title</th>
+                    <th>ListedPrice</th>
                     <th>Description</th>
-                    <th>Price</th>
-                    <th>U/D</th>
+                 
+                    <th>Discount</th>
+                    <th>FinaPrice</th>
+                    <th>Action</th>
                 </tr>
             </thead>
-<!--            int id;
-   OriginalProduct oProduct;
-   String name;
-   int stock;
-   String thumbnail;-->
-
-<!--       int id;
-    int category;
-    String title;
-    int listedPrice;
-    String description;
-    String thumbnail;
-    double discount;
-    double finalPrice;-->
+            <!--              int id;
+                int category;
+                String title;
+                int listedPrice;
+                String description;
+                String thumbnail;
+                double discount;
+                double finalPrice;-->
             <tbody>
-                <c:forEach var="p" items="${requestScope.list}">
+                <c:forEach items="${requestScope.list}" var="op">
                     <tr>
-                        <td>${p.id}</td>
-                        <td><img style="width:50px;" src="${p.thumbnail}" alt="alt"/></td>
-                        <td>${p.oproduct.title}</td>
-                        <td>${p.oproduct.listedPrice}</td>
-                        <td> <a style="color:black" onclick="doDelete('${p.id}')" href="#">Delete</a> &nbsp;&nbsp;&nbsp;
-                            <a style="color:black" href="update?id=${p.id}">Update</a></td>
+                        <td><a href="productDetail?id=${op.id}" target="_blank">${op.id}</a></td>
+                        <td>
+                            <c:if test="${op.category == 1}"> Túi tote</c:if>
+                            <c:if test="${op.category == 2}"> Dây buộc tóc </c:if>
+                            <c:if test="${op.category == 3}"> Vòng cổ</c:if>
+
+                            </td>
+                            <td>${op.title}</td>
+                        <td>${op.listedPrice}</td>
+                        <td>${op.description}</td>
+                     
+
+                        <td>${op.discount }</td>
+                        <td>${op.finalPrice }</td>
+                        <td> <input onclick="doDelete('${op.id}')" type="button" value="DELETE">
+                            <input onclick="doUpdate('${op.id}')" type="button" value="UPDATE">  </td>
                     </tr>
-
                 </c:forEach>
-
 
             </tbody>
         </table>
-        <a style="color:black" href="add">ADD</a>
+
+        <a style="color:black" href="addOProduct.jsp">ADD</a>
 
         <script >
             function doDelete(id) {
                 if (confirm('Are u sure to delete id ' + id + ' ?')) {
-                    window.location = 'delete?id=' + id;
+                    window.location = 'deleteop?did=' + id;
                 }
+            }
+            function doUpdate(id) {
+                window.location = 'dashboard?uid=' + id;
             }
 
         </script>

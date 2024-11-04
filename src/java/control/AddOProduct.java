@@ -5,7 +5,7 @@
 
 package control;
 
-import dal.ProductDAO;
+import dal.OriginalProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,16 +13,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import java.util.List;
-import model.Product;
+import model.OriginalProduct;
 
 /**
  *
  * @author asus
  */
-@WebServlet(name="SearchServlet", urlPatterns={"/search"})
-public class SearchServlet extends HttpServlet {
+@WebServlet(name="AddOProduct", urlPatterns={"/addop"})
+public class AddOProduct extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -39,10 +38,10 @@ public class SearchServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SearchServlet</title>");  
+            out.println("<title>Servlet AddOProduct</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SearchServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet AddOProduct at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,21 +57,39 @@ public class SearchServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-//        processRequest(request, response);
-            ProductDAO pd = new ProductDAO();
-             String name = request.getParameter("keyword");
-             
-             if(name != null){
-                 List<Product> searchProducts = pd.getProducts(0, name, 0, 0, 0);
-                 HttpSession session = request.getSession();
-                 session.setAttribute("searchProducts", searchProducts);
-                 
-                 
-             }
-                    response.sendRedirect("nav");
-    } 
+            throws ServletException, IOException {
 
+    
+        int cid = 0;
+        String title = request.getParameter("t");
+        int listed = 0;
+        String des = request.getParameter("d");
+        double dis = 0;
+        PrintWriter out = response.getWriter();
+//        out.println(title);
+        try {
+        
+            cid = Integer.parseInt(request.getParameter("c"));
+            listed = Integer.parseInt(request.getParameter("p"));
+            dis = Double.parseDouble(request.getParameter("di"));
+//              out.println(dis);
+
+        } catch (Exception e) {
+        }
+       
+        OriginalProduct o = new OriginalProduct(0, cid, title, listed, des, null, dis, listed * dis);
+        OriginalProductDAO d = new OriginalProductDAO();
+       
+           d.insertOriginalProduct(o);
+        
+
+        OriginalProductDAO od = new OriginalProductDAO();
+        List<OriginalProduct> oproducts = od.getOProducts();
+
+        request.setAttribute("list", oproducts);
+         request.getRequestDispatcher("dashboard.jsp").forward(request, response);
+
+    }
     /** 
      * Handles the HTTP <code>POST</code> method.
      * @param request servlet request

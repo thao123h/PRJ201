@@ -4,6 +4,8 @@
  */
 package model;
 
+import java.sql.Date;
+
 /**
  *
  * @author asus
@@ -13,15 +15,17 @@ public class Order {
     User user ;
     int status;
 int totalMoney;
+Date orderDate ;
 
     public Order() {
     }
 
-    public Order(int id, User user, int status, int totalMoney) {
+    public Order(int id, User user, int status, int totalMoney, Date orderDate) {
         this.id = id;
         this.user = user;
         this.status = status;
         this.totalMoney = totalMoney;
+        this.orderDate = orderDate;
     }
 
     public int getId() {
@@ -56,6 +60,14 @@ int totalMoney;
         this.totalMoney = totalMoney;
     }
 
+    public Date getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(Date orderDate) {
+        this.orderDate = orderDate;
+    }
+   
    
    
     

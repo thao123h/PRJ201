@@ -81,6 +81,7 @@ public class LoginServlet extends HttpServlet {
 
         if (u != null) {
             // Đăng nhập thành công
+
             Cookie cname = new Cookie("email", email);
             Cookie cpass = new Cookie("pass", pass);
 
@@ -91,19 +92,24 @@ public class LoginServlet extends HttpServlet {
             response.addCookie(cpass);
 
             session.setAttribute("user", u);
-            CartDAO cd = new CartDAO();
-            Cart c = cd.getCardByUserID(u.getId());
-            if (c == null) {
-                cd.insertCart(u.getId());
-                c = cd.getCardByUserID(u.getId());
-            }
-            session.setAttribute("cartID", c.getId());
-            if (session.getAttribute("loginToBuy") != null) {
-                int productID = (int) session.getAttribute("productIDToBuy");
-                response.sendRedirect("detail?id=" + productID);
+            if (u.getRole().equalsIgnoreCase("admin")) {
+                response.sendRedirect("dashboard");
             } else {
-                response.sendRedirect("home");
+                CartDAO cd = new CartDAO();
+                Cart c = cd.getCardByUserID(u.getId());
+                if (c == null) {
+                    cd.insertCart(u.getId());
+                    c = cd.getCardByUserID(u.getId());
+                }
+                session.setAttribute("cartID", c.getId());
+                if (session.getAttribute("loginToBuy") != null) {
+                    int productID = (int) session.getAttribute("productIDToBuy");
+                    response.sendRedirect("detail?id=" + productID);
+                } else {
+                    response.sendRedirect("home");
+                }
             }
+
         } else {
             // Đăng nhập thất bại
             session.setAttribute("msg", "Email hoặc mật khẩu không chính xác!");

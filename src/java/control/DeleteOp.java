@@ -5,6 +5,7 @@
 
 package control;
 
+import dal.OriginalProductDAO;
 import dal.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,16 +14,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import java.util.List;
-import model.Product;
+import model.OriginalProduct;
 
 /**
  *
  * @author asus
  */
-@WebServlet(name="SearchServlet", urlPatterns={"/search"})
-public class SearchServlet extends HttpServlet {
+@WebServlet(name="DeleteOp", urlPatterns={"/deleteop"})
+public class DeleteOp extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -39,10 +39,10 @@ public class SearchServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SearchServlet</title>");  
+            out.println("<title>Servlet DeleteOp</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SearchServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet DeleteOp at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,19 +59,28 @@ public class SearchServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-//        processRequest(request, response);
-            ProductDAO pd = new ProductDAO();
-             String name = request.getParameter("keyword");
-             
-             if(name != null){
-                 List<Product> searchProducts = pd.getProducts(0, name, 0, 0, 0);
-                 HttpSession session = request.getSession();
-                 session.setAttribute("searchProducts", searchProducts);
-                 
-                 
-             }
-                    response.sendRedirect("nav");
-    } 
+         ProductDAO pd = new ProductDAO();
+
+        OriginalProductDAO od = new OriginalProductDAO();
+    
+        int did = 0;
+        try {
+            did = Integer.parseInt(request.getParameter("did"));
+            if (did != 0) {
+                od.delete(did);
+            }
+
+        } catch (Exception e) {
+        }
+       
+    List<OriginalProduct> oproducts = od.getOProducts();
+        
+            request.setAttribute("list", oproducts);
+//            response.sendRedirect("dashboard.jsp");
+            request.getRequestDispatcher("dashboard.jsp").forward(request, response);
+        }
+
+    
 
     /** 
      * Handles the HTTP <code>POST</code> method.

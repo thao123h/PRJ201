@@ -77,6 +77,17 @@ public class ProductDAO extends DBContext {
         return null;
     }
 
+    public void updateQuantity(int sl, int id) {
+        String sql = "update Products(stock) values (?) where id = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, sl);
+            st.setInt(2, id);
+            st.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
+
     public List<Product> getProducts(int cid, String name, int lowerPrice, int upperPrice, int oid) {
         List<Product> products = new ArrayList<>();
         String sql = "select o.id as oid,o.categoryID, o.title, o.listedPrice,o.description,o.thumbnail"
@@ -167,6 +178,14 @@ public class ProductDAO extends DBContext {
         }
         return products;
 
+    }
+
+    public List<Product> getListByPage(ArrayList<Product> list, int start, int end) {
+        ArrayList<Product> arr = new ArrayList<>();
+        for (int i = start; i < end; i++) {
+            arr.add(list.get(i));
+        }
+        return arr;
     }
 
     public List<Product> getNewProducts() {

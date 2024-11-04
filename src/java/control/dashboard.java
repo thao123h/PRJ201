@@ -2,10 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package control;
 
+import dal.OrderDAO;
+import dal.OriginalProductDAO;
 import dal.ProductDAO;
+import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,42 +16,48 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
+import model.Order;
+import model.OriginalProduct;
 import model.Product;
+import model.User;
 
 /**
  *
  * @author asus
  */
-@WebServlet(name="dashboard", urlPatterns={"/dashboard"})
+@WebServlet(name = "dashboard", urlPatterns = {"/dashboard"})
 public class dashboard extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet dashboardd</title>");  
+            out.println("<title>Servlet dashboardd</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet dashboardd at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet dashboardd at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    } 
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -57,18 +65,42 @@ public class dashboard extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
 //        processRequest(request, response);
-ProductDAO pd = new ProductDAO();
-//List<Product> products = pd.getProducts();
-// request.setAttribute("list", products);
- request.getRequestDispatcher("dashboard.jsp").forward(request, response);
-        
-        
-    } 
+        ProductDAO pd = new ProductDAO();
 
-    /** 
+        OriginalProductDAO od = new OriginalProductDAO();
+       
+        int did = 0;
+        try {
+            did = Integer.parseInt(request.getParameter("did"));
+            if (did != 0) {
+                od.delete(did);
+            }
+
+        } catch (Exception e) {
+        }
+        int uid = 0;
+
+        try {
+            uid = Integer.parseInt(request.getParameter("uid"));
+
+        } catch (Exception e) {
+        }
+ List<OriginalProduct> oproducts = od.getOProducts();
+        if (uid != 0) {
+            request.setAttribute("pupdate", od.getOProductByID(uid));
+            request.getRequestDispatcher("updateOProduct.jsp").forward(request, response);
+        } else {
+            request.setAttribute("list", oproducts);
+            request.getRequestDispatcher("dashboard.jsp").forward(request, response);
+        }
+
+    }
+
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -76,12 +108,43 @@ ProductDAO pd = new ProductDAO();
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        processRequest(request, response);
+            throws ServletException, IOException {
+
+        int id = 0;
+        int cid = 0;
+        String title = request.getParameter("t");
+        int listed = 0;
+        String des = request.getParameter("d");
+        double dis = 0;
+        PrintWriter out = response.getWriter();
+//        out.println(title);
+        try {
+            id = Integer.parseInt(request.getParameter("id"));
+            cid = Integer.parseInt(request.getParameter("c"));
+            listed = Integer.parseInt(request.getParameter("p"));
+            dis = Double.parseDouble(request.getParameter("di"));
+//              out.println(dis);
+
+        } catch (Exception e) {
+        }
+       
+        OriginalProduct o = new OriginalProduct(id, cid, title, listed, des, null, dis, listed * dis);
+        OriginalProductDAO d = new OriginalProductDAO();
+       
+            d.update(o);
+        
+
+        OriginalProductDAO od = new OriginalProductDAO();
+        List<OriginalProduct> oproducts = od.getOProducts();
+
+        request.setAttribute("list", oproducts);
+         request.getRequestDispatcher("dashboard.jsp").forward(request, response);
+
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

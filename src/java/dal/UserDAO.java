@@ -64,14 +64,38 @@ public class UserDAO extends DBContext {
         return null;
 
     }
-     public User getUserByEmail( String email) {
+
+    public List<User> getAllCustomers() {
+        List<User> list = new ArrayList<>();
+        String sql = "select * from Users where role = ?";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, "user");
+
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+
+                User u;
+                u = new User(rs.getInt("id"), rs.getString("email"), rs.getString("fullname"), rs.getString("phoneNumber"), rs.getString("address"),
+                        rs.getString("password"), rs.getString("role"));
+                list.add(u);
+            }
+
+        } catch (Exception e) {
+        }
+        return list;
+
+    }
+
+    public User getUserByEmail(String email) {
 
         String sql = "select * from Users where email=?";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, email);
-            
+
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
 
@@ -85,13 +109,14 @@ public class UserDAO extends DBContext {
         return null;
 
     }
-      public boolean updatePassword(String email, String password) {
+
+    public boolean updatePassword(String email, String password) {
         String sql = "UPDATE Users SET password = ? WHERE email = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, password);
             st.setString(2, email);
-            
+
             int rowsAffected = st.executeUpdate();
             System.out.println("Rows affected: " + rowsAffected); // Debug line
             return rowsAffected > 0;
@@ -101,14 +126,15 @@ public class UserDAO extends DBContext {
             return false;
         }
     }
-      public User getUserByID( int id) {
+
+    public User getUserByID(int id) {
 
         String sql = "select * from Users where id=?";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
-            
+
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
 
@@ -193,7 +219,7 @@ public class UserDAO extends DBContext {
     public static void main(String[] args) {
         UserDAO ud = new UserDAO();
         if (ud.getUserByNameEmail("đinh thị thảo", "cohienkiu12345@gmail.com") != null) {
-            System.out.println(ud.getUserByEmail( "cohienkiu12345@gmail.com").getFullname());
+            System.out.println(ud.getUserByEmail("cohienkiu12345@gmail.com").getFullname());
         } else {
             System.out.println("npppp");
         }

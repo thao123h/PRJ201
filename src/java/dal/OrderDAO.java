@@ -7,10 +7,12 @@ package dal;
 import model.Order;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import model.OrderDetail;
 import model.Product;
 import model.User;
+import org.apache.tomcat.dbcp.dbcp2.PoolableCallableStatement;
 
 /**
  *
@@ -33,6 +35,22 @@ public class OrderDAO extends DBContext {
         } catch (Exception e) {
         }
     }
+    public List<Order> getOrders (){
+        String sql = " select * from Orders";
+        List<Order> list = new ArrayList<>();
+          UserDAO ud = new UserDAO();
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                list.add (new Order(rs.getInt("id"), ud.getUserByID(rs.getInt("userID")), rs.getInt("status"),
+                        rs.getInt("totalMoney"),rs.getDate("orderDate")));
+            }
+            
+        } catch (Exception e) {
+        }
+        return list;
+    }
 
     public Order getOrderByUserID(int userID) {
         String sql = "select top 1 * from Orders where userID = ? order by orderDate desc";
@@ -43,7 +61,8 @@ public class OrderDAO extends DBContext {
             st.setInt(1, userID);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                return new Order(rs.getInt("id"), ud.getUserByID(rs.getInt("userID")), rs.getInt("status"), rs.getInt("totalMoney"));
+                return new Order(rs.getInt("id"), ud.getUserByID(rs.getInt("userID")), rs.getInt("status"),
+                        rs.getInt("totalMoney"),rs.getDate("orderDate"));
             }
         } catch (Exception e) {
 
@@ -113,7 +132,7 @@ public class OrderDAO extends DBContext {
     }
 
     public static void main(String[] args) {
-        OrderDAO od = new OrderDAO();
+        OrderDAO od = new OrderDAO();System.out.println(od.getOrders().size());
         UserDAO ud = new UserDAO();
 //        od.insertIntoOrder(new Order(0, ud.getUserByID(6), 0, 0));
 //        od.getOrderByUserID(6);

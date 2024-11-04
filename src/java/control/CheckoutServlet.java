@@ -100,7 +100,7 @@ public class CheckoutServlet extends HttpServlet {
         User user = (User) session.getAttribute("user");
         Order order = new Order();
         if (user != null) {
-            od.insertIntoOrder(new Order(0, user, 0, 0));
+            od.insertIntoOrder(new Order(0, user, 0, 0,null));
 
             //insert into OrderDetail
             order = od.getOrderByUserID(user.getId());
@@ -112,6 +112,7 @@ public class CheckoutServlet extends HttpServlet {
             int price = 0;
             if (cartItem != null && cartItem.getProduct() != null && cartItem.getProduct().getOproduct() != null) {
                 price = cartItem.getQuantity() * (int) cartItem.getProduct().getOproduct().getListedPrice();
+                pd.updateQuantity(cartItem.getProduct().getStock()-cartItem.getQuantity(), cartItem.getProduct().getId());
             } else {
                 out.print("One of the objects is null.");
             }
