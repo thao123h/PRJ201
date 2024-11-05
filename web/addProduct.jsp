@@ -99,11 +99,13 @@ uri="http://java.sun.com/jsp/jstl/core"%>
   </head>
   <body>
     <div class="container">
-     
+      <a href="javascript:history.back()" class="btn-back">
+        <i class="fas fa-arrow-left"></i> Back
+      </a>
 
       <div class="card">
         <div class="card-header">
-          <h2><i class="fas fa-edit mr-2"></i>Update Product</h2>
+          <h2><i class="fas fa-edit mr-2"></i>Add Product</h2>
         </div>
         <div class="card-body">
           <c:if test="${not empty requestScope.error}">
@@ -111,25 +113,9 @@ uri="http://java.sun.com/jsp/jstl/core"%>
               ${requestScope.error}
             </div>
           </c:if>
-          <c:set value="${requestScope.product}" var="p" />
-          <form
-            action="updateProduct"
-            method="post"
-            enctype="multipart/form-data"
-          >
-            <div class="form-group">
-              <label for="id">ID:</label>
-              <input
-                type="text"
-                class="form-control"
-                id="id"
-                name="id"
-                value="${p.id}"
-                readonly
-              />
-            </div>
 
-            <input type="hidden" id="o" name="o" value="${p.oproduct.id}" />
+          <form action="addProduct" method="post" enctype="multipart/form-data">
+            <input type="hidden" id="o" name="o" value="${requestScope.oid}" />
 
             <div class="form-group">
               <label for="name">Name:</label>
@@ -138,7 +124,6 @@ uri="http://java.sun.com/jsp/jstl/core"%>
                 class="form-control"
                 id="name"
                 name="name"
-                value="${p.name}"
                 required
               />
             </div>
@@ -150,7 +135,6 @@ uri="http://java.sun.com/jsp/jstl/core"%>
                 class="form-control"
                 id="stock"
                 name="stock"
-                value="${p.stock}"
                 required
               />
             </div>
@@ -163,13 +147,10 @@ uri="http://java.sun.com/jsp/jstl/core"%>
                 id="thumbnail"
                 name="thumbnail"
               />
-              <small class="form-text text-muted"
-                >Current thumbnail: ${p.thumbnail}</small
-              >
             </div>
 
             <button type="submit" class="btn btn-submit btn-block">
-              <i class="fas fa-save mr-2"></i>Update Product
+              <i class="fas fa-plus mr-2"></i>Add Product
             </button>
           </form>
         </div>

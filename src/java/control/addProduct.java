@@ -12,24 +12,22 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-import model.OriginalProduct;
+import java.io.PrintWriter;
 import model.Product;
 
-@WebServlet(name = "UpdateProduct", urlPatterns = {"/updateProduct"})
-@MultipartConfig // Enables file upload handling
-public class UpdateProduct extends HttpServlet {
+@WebServlet(name = "addProduct", urlPatterns = {"/addProduct"})
+@MultipartConfig
+public class addProduct extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ProductDAO productDAO = new ProductDAO();
         try {
-            int id = Integer.parseInt(request.getParameter("id"));
-            Product product = productDAO.getProductByID(id);
-            request.setAttribute("product", product);
-            request.getRequestDispatcher("updateProduct.jsp").forward(request, response);
+            String oid = request.getParameter("id");
+            request.setAttribute("oid", oid);
+            request.getRequestDispatcher("addProduct.jsp").forward(request, response);
         } catch (Exception e) {
-            e.printStackTrace(); // Log the exception for debugging
+            e.printStackTrace();
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid product ID.");
         }
     }
@@ -39,52 +37,58 @@ public class UpdateProduct extends HttpServlet {
             throws ServletException, IOException {
         ProductDAO productDAO = new ProductDAO();
         OriginalProductDAO originalProductDAO = new OriginalProductDAO();
-
+        PrintWriter out = response.getWriter();
         try {
-            int id = Integer.parseInt(request.getParameter("id"));
-            int o = Integer.parseInt(request.getParameter("o"));
+            String originalProductIdStr = request.getParameter("o");
+            if (originalProductIdStr == null || originalProductIdStr.trim().isEmpty()) {
+                throw new IllegalArgumentException("Original product ID is required");
+            }
+            
+            int originalProductId = Integer.parseInt(originalProductIdStr);
             String name = request.getParameter("name");
             int stock = Integer.parseInt(request.getParameter("stock"));
             
-            // Handle the file upload
             Part thumbnailPart = request.getPart("thumbnail");
             String thumbnailFileName = null;
 
-            // Check if a new file was uploaded
             if (thumbnailPart != null && thumbnailPart.getSize() > 0) {
                 thumbnailFileName = Paths.get(thumbnailPart.getSubmittedFileName()).getFileName().toString();
                 
-                // Get the absolute path of the web application
                 String applicationPath = request.getServletContext().getRealPath("");
-                // Create the upload folder if it doesn't exist
                 String uploadPath = applicationPath + File.separator + "images";
                 File uploadDir = new File(uploadPath);
                 if (!uploadDir.exists()) {
                     uploadDir.mkdir();
                 }
                 
-                // Save the file
                 String filePath = uploadPath + File.separator + thumbnailFileName;
                 thumbnailPart.write(filePath);
                 
-                // Set the relative path for database storage
                 thumbnailFileName = "images/" + thumbnailFileName;
-            } else {
-                // If no new file, keep the existing thumbnail
-                thumbnailFileName = productDAO.getProductByID(id).getThumbnail();
             }
 
-            // Update the product
-            Product product = new Product(id, originalProductDAO.getOProductByID(o), name, stock, thumbnailFileName);
-            productDAO.updateProduct(product);
+            Product product = new Product();
+            product.setOproduct(originalProductDAO.getOProductByID(originalProductId));
+            product.setName(name);
+            product.setStock(stock);
+            product.setThumbnail(thumbnailFileName);
 
-            // Redirect to productDetail with the original product ID
-            response.sendRedirect("productDetail?id=" + o);
+            productDAO.insertProduct(product);
+         
+             
+
+            response.sendRedirect("productDetail?id=" + originalProductId);
             
+        } catch (NumberFormatException e) {
+            request.setAttribute("error", "Invalid number format: Please check your input");
+            request.getRequestDispatcher("addProduct.jsp").forward(request, response);
+        } catch (IllegalArgumentException e) {
+            request.setAttribute("error", e.getMessage());
+            request.getRequestDispatcher("addProduct.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("error", "An error occurred: " + e.getMessage());
-            request.getRequestDispatcher("updateProduct.jsp").forward(request, response);
+            request.getRequestDispatcher("addProduct.jsp").forward(request, response);
         }
     }
 }

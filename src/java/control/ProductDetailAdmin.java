@@ -7,6 +7,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.PrintWriter;
 import java.util.List;
 import model.Product;
@@ -36,13 +37,14 @@ public class ProductDetailAdmin extends HttpServlet {
         ProductDAO productDAO = new ProductDAO();
         int id = 0;
         int did = 0;
-       
+       HttpSession session = request.getSession();
         boolean redirectToUpdate = false;
 
         try {
             // Parse parameters
             if (request.getParameter("id") != null) {
                 id = Integer.parseInt(request.getParameter("id"));
+                session.setAttribute("aid", id);
             }
             if (request.getParameter("did") != null) {
                 did = Integer.parseInt(request.getParameter("did"));
@@ -51,15 +53,15 @@ public class ProductDetailAdmin extends HttpServlet {
             // Handle deletion if did is not zero
             if (did != 0) {
                 productDAO.delete(did);
-                id = did; // Set id to did for potential further operations
+                id =(int) session.getAttribute("aid");
             }
 
             // If not redirected to update page, show product details
-            if (!redirectToUpdate) {
+        
                 List<Product> productList = productDAO.getProductsByOid(id);
                 request.setAttribute("list", productList);
                 request.getRequestDispatcher("detailAdmin.jsp").forward(request, response);
-            }
+            
 
         } catch (NumberFormatException e) {
             request.setAttribute("error", "Invalid product ID format.");

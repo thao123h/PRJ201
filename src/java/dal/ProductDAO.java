@@ -326,7 +326,7 @@ public class ProductDAO extends DBContext {
         }   
     }
  public void insertProduct(Product product){
-    String sql = "insert into Products (originalProductID,name, stock, thumbnail) values (?,?,?)";
+    String sql = "insert into Products (originalProductID,name, stock, thumbnail) values (?,?,?,?)";
     try {
             PreparedStatement st = connection.prepareStatement(sql);
         // Set parameters for the SQL statement
