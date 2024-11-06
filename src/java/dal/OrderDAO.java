@@ -35,19 +35,69 @@ public class OrderDAO extends DBContext {
         } catch (Exception e) {
         }
     }
-    public List<Order> getOrders (){
+public void updateOrderStatus( int status, int id) {
+        String sql = "update Orders set status = ? where id = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, status);
+            st.setInt(2, id);
+            st.executeQuery();
+        } catch (Exception e) {
+        }
+    }
+
+    public List<Order> getOrders() {
         String sql = " select * from Orders";
         List<Order> list = new ArrayList<>();
-          UserDAO ud = new UserDAO();
+        UserDAO ud = new UserDAO();
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
-            while(rs.next()){
-                list.add (new Order(rs.getInt("id"), ud.getUserByID(rs.getInt("userID")), rs.getInt("status"),
-                        rs.getInt("totalMoney"),rs.getDate("orderDate")));
+            while (rs.next()) {
+                list.add(new Order(rs.getInt("id"), ud.getUserByID(rs.getInt("userID")), rs.getInt("status"),
+                        rs.getInt("totalMoney"), rs.getDate("orderDate")));
             }
-            
+
         } catch (Exception e) {
+        }
+        return list;
+    }
+
+    public Order getAnOrder(int oid) {
+        String sql = "select * from Orders where id = ?";
+
+        UserDAO ud = new UserDAO();
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, oid);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                new Order(rs.getInt("id"), ud.getUserByID(rs.getInt("userID")), rs.getInt("status"),
+                        rs.getInt("totalMoney"), rs.getDate("orderDate"));
+            }
+
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    public List<OrderDetail> getAllOrderDetals(int oid) {
+        String sql = "select * from OrderDetails where orderID = ?";
+        List<OrderDetail> list = new ArrayList<>();
+        UserDAO ud = new UserDAO();
+        ProductDAO d = new ProductDAO();
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, oid);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Order o = getAnOrder(rs.getInt("orderID"));
+                list.add(new OrderDetail(rs.getInt("id"), o, d.getProductByID(rs.getInt("productID")), rs.getInt("num"), rs.getInt("totalMoney")));
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
         }
         return list;
     }
@@ -62,7 +112,7 @@ public class OrderDAO extends DBContext {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 return new Order(rs.getInt("id"), ud.getUserByID(rs.getInt("userID")), rs.getInt("status"),
-                        rs.getInt("totalMoney"),rs.getDate("orderDate"));
+                        rs.getInt("totalMoney"), rs.getDate("orderDate"));
             }
         } catch (Exception e) {
 
@@ -70,7 +120,7 @@ public class OrderDAO extends DBContext {
         return null;
     }
 
-       public void updateTotalMoneyInOrder(int oid) {
+    public void updateTotalMoneyInOrder(int oid) {
         int total = 0;
         String sql = "select sum(totalMoney) as total from OrderDetails where orderID = ?";
         String sql2 = "update Orders set totalMoney = ? where id = ?";
@@ -78,27 +128,24 @@ public class OrderDAO extends DBContext {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, oid);
             try {
-                   ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                total = rs.getInt("total");
-            }
+                ResultSet rs = st.executeQuery();
+                while (rs.next()) {
+                    total = rs.getInt("total");
+                }
             } catch (Exception e) {
             }
         } catch (Exception e) {
         }
-        try { 
-  
+        try {
+
             PreparedStatement st2 = connection.prepareStatement(sql2);
             st2.setInt(1, total);
             st2.setInt(2, oid);
             st2.executeUpdate();
         } catch (Exception e) {
         }
-    
-       
-   
-}
 
+    }
 
     public void insertIntoOrderDetail(OrderDetail odetail) {
         String sql = "insert into OrderDetails(orderID,productID,num,totalMoney) values(?,?,?,?)";
@@ -132,14 +179,22 @@ public class OrderDAO extends DBContext {
     }
 
     public static void main(String[] args) {
-        OrderDAO od = new OrderDAO();System.out.println(od.getOrders().size());
+        OrderDAO od = new OrderDAO();
+      
         UserDAO ud = new UserDAO();
 //        od.insertIntoOrder(new Order(0, ud.getUserByID(6), 0, 0));
 //        od.getOrderByUserID(6);
 //        System.out.println(od.getOrderByUserID(6));
         ProductDAO pd = new ProductDAO();
+        if (od.getAnOrder(22) != null) {
+            System.out.println(od.getAnOrder(22).getTotalMoney());
+        }
+        else{
+            System.out.println("null");
+        }
+        od.updateOrderStatus(2, 22);
 //        od.insertIntoOrderDetail(new OrderDetail(0, od.getOrderByUserID(6), pd.getProductByID(8), 0, 0));
-        od.updateTotalMoneyInOrder(8);
+        System.out.println(od.getAllOrderDetals(22).size());
     }
 //    int id;
 //    Order order;

@@ -225,7 +225,16 @@ uri="http://java.sun.com/jsp/jstl/core" %>
                     <td>${o.orderDate}</td>
                     <td>${o.totalMoney}</td>
                     <td>
-                      ${o.status == 0 ? "pending" : "approved" }
+                        <c:if test="${o.status == 0}">
+                            pending
+                        </c:if>
+                            <c:if test="${o.status == 1}">
+                            approved
+                        </c:if>
+                            <c:if test="${o.status == 2}">
+                            cancel
+                        </c:if>
+                    
                     </td>
                     <td>
                       <a href="orderDetail?id=${o.id}" class="action-btn">
