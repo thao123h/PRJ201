@@ -101,6 +101,9 @@ public class RegisServlet extends HttpServlet {
           User u1 = ud.getUserByNameEmail(name, email);
         HttpSession session = request.getSession();
         session.setAttribute("user", u1);
+         User u2 =(User)session.getAttribute("user");
+         PrintWriter out = response.getWriter();
+        
         CartDAO cd = new CartDAO();
       
       
@@ -113,9 +116,16 @@ public class RegisServlet extends HttpServlet {
             cd.insertCart(u1.getId());
             c = cd.getCardByUserID(u1.getId());
         }
-        session.setAttribute("cartID", c.getId());
+         session.setAttribute("cartID", c.getId());
         session.setAttribute("success", "success");
         response.sendRedirect("home");
+        
+        
+              
+        
+        
+        
+        
     }
 
     /**

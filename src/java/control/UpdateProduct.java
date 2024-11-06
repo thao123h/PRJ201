@@ -79,7 +79,7 @@ public class UpdateProduct extends HttpServlet {
             productDAO.updateProduct(product);
 
             // Redirect to productDetail with the original product ID
-            response.sendRedirect("productDetail?id=" + o);
+            response.sendRedirect("productDetail");
             
         } catch (Exception e) {
             e.printStackTrace();

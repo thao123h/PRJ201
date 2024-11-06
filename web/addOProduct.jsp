@@ -128,7 +128,7 @@
           <h2><i class="fas fa-plus-circle mr-2"></i>Add New Product</h2>
         </div>
         <div class="card-body">
-          <form action="addop" method="POST">
+          <form action="addop">
             <div class="form-group">
               <label for="category">Category</label>
               <select class="form-control" id="category" name="c">
@@ -191,10 +191,10 @@
               </div>
             </div>
 
-            <button type="submit" class="btn btn-submit btn-block">
-                <a href="addop">  <i class="fas fa-plus-circle mr-2"></i>Add Product</a>
+            <input type="submit" class="btn btn-submit btn-block" value="Add Product" >
+              <!--<i class="fas fa-plus-circle mr-2"></i>-->
              
-            </button>
+            </input>
           </form>
         </div>
       </div>

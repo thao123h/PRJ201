@@ -5,6 +5,7 @@
 
 package control;
 
+import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,13 +13,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import model.User;
 
 /**
  *
  * @author asus
  */
-@WebServlet(name="DeleteProduct", urlPatterns={"/deletep"})
-public class DeleteProduct extends HttpServlet {
+@WebServlet(name="UserAdmin", urlPatterns={"/users"})
+public class UserAdmin extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -35,10 +38,10 @@ public class DeleteProduct extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet DeleteProduct</title>");  
+            out.println("<title>Servlet UserAdmin</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet DeleteProduct at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet UserAdmin at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -55,7 +58,11 @@ public class DeleteProduct extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+//        processRequest(request, response);
+UserDAO ud = new UserDAO();
+List<User> list = ud.getAllCustomers();
+request.setAttribute("users", list);
+request.getRequestDispatcher("userAdmin.jsp").forward(request, response);
     } 
 
     /** 

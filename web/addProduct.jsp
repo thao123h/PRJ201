@@ -115,7 +115,7 @@ uri="http://java.sun.com/jsp/jstl/core"%>
           </c:if>
 
           <form action="addProduct" method="post" enctype="multipart/form-data">
-            <input type="hidden" id="o" name="o" value="${requestScope.oid}" />
+              <input type="hidden" id="o" name="o" value="${sessionScope.oid}" />
 
             <div class="form-group">
               <label for="name">Name:</label>

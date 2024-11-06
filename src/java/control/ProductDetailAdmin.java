@@ -44,7 +44,7 @@ public class ProductDetailAdmin extends HttpServlet {
             // Parse parameters
             if (request.getParameter("id") != null) {
                 id = Integer.parseInt(request.getParameter("id"));
-                session.setAttribute("aid", id);
+                session.setAttribute("oid", id);
             }
             if (request.getParameter("did") != null) {
                 did = Integer.parseInt(request.getParameter("did"));
@@ -53,11 +53,11 @@ public class ProductDetailAdmin extends HttpServlet {
             // Handle deletion if did is not zero
             if (did != 0) {
                 productDAO.delete(did);
-                id =(int) session.getAttribute("aid");
+                id =(int) session.getAttribute("oid");
             }
 
             // If not redirected to update page, show product details
-        
+     id =(int) session.getAttribute("oid");
                 List<Product> productList = productDAO.getProductsByOid(id);
                 request.setAttribute("list", productList);
                 request.getRequestDispatcher("detailAdmin.jsp").forward(request, response);

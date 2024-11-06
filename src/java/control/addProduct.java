@@ -22,14 +22,9 @@ public class addProduct extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            String oid = request.getParameter("id");
-            request.setAttribute("oid", oid);
+        
             request.getRequestDispatcher("addProduct.jsp").forward(request, response);
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid product ID.");
-        }
+       
     }
 
     @Override
