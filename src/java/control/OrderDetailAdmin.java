@@ -63,18 +63,24 @@ public class OrderDetailAdmin extends HttpServlet {
             throws ServletException, IOException {
 //        processRequest(request, response);
         int oid = 0;
+           int status= -1;
         try {
             oid = Integer.parseInt(request.getParameter("id"));
             HttpSession session = request.getSession();
             session.setAttribute("odt", oid);
             OrderDAO od = new OrderDAO();
+            if(od.getAnOrder(oid)!=null)
+             status = od.getAnOrder(oid).getStatus();
             List<OrderDetail> ode = od.getAllOrderDetals(oid);
             request.setAttribute("list", ode);
+            request.setAttribute("status", status);
             PrintWriter out = response.getWriter();
-            out.print(ode.size());
+            out.print(status);
+             out.print(od.getAnOrder(oid).getStatus());
             request.getRequestDispatcher("orderDetail.jsp").forward(request, response);
 
         } catch (Exception e) {
+            System.out.println(e);
         }
     }
 
@@ -89,7 +95,18 @@ public class OrderDetailAdmin extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+//        processRequest(request, response);
+        int action = -1;
+        HttpSession session = request.getSession();
+//            session.setAttribute("odt", oid);
+        int id = (int) session.getAttribute("odt");
+        try {
+            action = Integer.parseInt(request.getParameter("action"));
+            OrderDAO od = new OrderDAO();
+            od.updateOrderStatus(action, id);
+            response.sendRedirect("orders");
+        } catch (Exception e) {
+        }
     }
 
     /**

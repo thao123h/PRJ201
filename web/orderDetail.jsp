@@ -45,7 +45,16 @@
                            
               
             </tbody>
+            
         </table>
+        <c:if test="${requestScope.status == 0}">
+            <form action="orderDetail?action=2" method="post">
+                <input type="submit" value="CANCEL">
+            </form>
+            <form action="orderDetail?action=1" method="post">
+                <input type="submit" value="APPROVE">
+            </form>
+        </c:if>
 
         
     </body>

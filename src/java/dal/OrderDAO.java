@@ -35,7 +35,8 @@ public class OrderDAO extends DBContext {
         } catch (Exception e) {
         }
     }
-public void updateOrderStatus( int status, int id) {
+
+    public void updateOrderStatus(int status, int id) {
         String sql = "update Orders set status = ? where id = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -72,7 +73,7 @@ public void updateOrderStatus( int status, int id) {
             st.setInt(1, oid);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                new Order(rs.getInt("id"), ud.getUserByID(rs.getInt("userID")), rs.getInt("status"),
+                 return new Order(rs.getInt("id"), ud.getUserByID(rs.getInt("userID")), rs.getInt("status"),
                         rs.getInt("totalMoney"), rs.getDate("orderDate"));
             }
 
@@ -180,19 +181,19 @@ public void updateOrderStatus( int status, int id) {
 
     public static void main(String[] args) {
         OrderDAO od = new OrderDAO();
-      
+
         UserDAO ud = new UserDAO();
 //        od.insertIntoOrder(new Order(0, ud.getUserByID(6), 0, 0));
 //        od.getOrderByUserID(6);
 //        System.out.println(od.getOrderByUserID(6));
         ProductDAO pd = new ProductDAO();
-        if (od.getAnOrder(22) != null) {
-            System.out.println(od.getAnOrder(22).getTotalMoney());
-        }
-        else{
-            System.out.println("null");
-        }
-        od.updateOrderStatus(2, 22);
+//        if (od.getAnOrder(22) != null) {
+//            System.out.println(od.getAnOrder2(22).getTotalMoney());
+//        } else {
+//            System.out.println("null");
+//        }
+        System.out.println(od.getOrders().size());
+
 //        od.insertIntoOrderDetail(new OrderDetail(0, od.getOrderByUserID(6), pd.getProductByID(8), 0, 0));
         System.out.println(od.getAllOrderDetals(22).size());
     }
