@@ -121,51 +121,91 @@ uri="http://java.sun.com/jsp/jstl/core" %>
       }
 
       .status-badge {
-        padding: 5px 10px;
-        border-radius: 15px;
+        padding: 8px 12px;
+        border-radius: 20px;
         font-weight: 500;
-        font-size: 12px;
+        font-size: 13px;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
       }
 
       .status-pending {
-        background-color: #ffeeba;
+        background-color: #fff3cd;
         color: #856404;
-      }
-
-      .status-processing {
-        background-color: #b8e6ff;
-        color: #004085;
+        border: 1px solid #ffeeba;
       }
 
       .status-completed {
-        background-color: #c3e6cb;
+        background-color: #d4edda;
         color: #155724;
+        border: 1px solid #c3e6cb;
       }
 
       .status-cancelled {
-        background-color: #f5c6cb;
+        background-color: #f8d7da;
         color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
       }
 
       .action-btn {
-        background-color: #f4b8cc;
-        color: black;
-        border: 2px solid #f4b8cc;
-        padding: 6px 15px;
+        padding: 6px 12px;
         border-radius: 5px;
+        font-size: 13px;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
         transition: all 0.3s ease;
-        text-decoration: none;
-        font-size: 14px;
       }
 
-      .action-btn:hover {
+      .view-btn {
+        background-color: #f4b8cc;
+        color: black;
+        border: 1px solid #f4b8cc;
+      }
+
+      .view-btn:hover {
         background-color: white;
         color: #d44d86;
-        text-decoration: none;
+      }
+
+      .approve-btn {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+
+      .approve-btn:hover {
+        background-color: #155724;
+        color: white;
+        border-color: #155724;
+      }
+
+      .cancel-btn {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+
+      .cancel-btn:hover {
+        background-color: #721c24;
+        color: white;
+        border-color: #721c24;
       }
 
       .table td {
-        vertical-align: middle;
+        padding: 15px;
+      }
+
+      .table th {
+        padding: 15px;
+        white-space: nowrap;
       }
     </style>
   </head>
@@ -220,26 +260,38 @@ uri="http://java.sun.com/jsp/jstl/core" %>
               <tbody>
                 <c:forEach items="${requestScope.orders}" var="o">
                   <tr>
-                    <td>${o.id}</td>
+                    <td>#${o.id}</td>
                     <td>${o.user.fullname}</td>
                     <td>${o.orderDate}</td>
-                    <td>${o.totalMoney}</td>
+                    <td>${o.totalMoney}đ</td>
                     <td>
-                        <c:if test="${o.status == 0}">
-                            pending
-                        </c:if>
-                            <c:if test="${o.status == 1}">
-                            approved
-                        </c:if>
-                            <c:if test="${o.status == 2}">
-                            cancel
-                        </c:if>
-                    
+                      <c:choose>
+                        <c:when test="${o.status == 0}">
+                          <span class="status-badge status-pending">
+                            <i class="fas fa-clock"></i> Pending
+                          </span>
+                        </c:when>
+                        <c:when test="${o.status == 1}">
+                          <span class="status-badge status-completed">
+                            <i class="fas fa-check"></i> Approved
+                          </span>
+                        </c:when>
+                        <c:when test="${o.status == 2}">
+                          <span class="status-badge status-cancelled">
+                            <i class="fas fa-times"></i> Cancelled
+                          </span>
+                        </c:when>
+                      </c:choose>
                     </td>
                     <td>
-                      <a href="orderDetail?id=${o.id}" class="action-btn">
-                        <i class="fas fa-eye"></i> View Details
-                      </a>
+                      <div class="action-buttons">
+                        <a
+                          href="orderDetail?id=${o.id}"
+                          class="action-btn view-btn"
+                        >
+                          <i class="fas fa-eye"></i> View Details
+                        </a>
+                      </div>
                     </td>
                   </tr>
                 </c:forEach>

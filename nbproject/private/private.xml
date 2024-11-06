@@ -20,6 +20,7 @@
             <file>file:/D:/ProjectPRJ/MyFirstWebsite/web/headerr.jsp</file>
             <file>file:/D:/ProjectPRJ/MyFirstWebsite/web/detailAdmin.jsp</file>
             <file>file:/D:/ProjectPRJ/MyFirstWebsite/web/WEB-INF/web.xml</file>
+            <file>file:/D:/ProjectPRJ/MyFirstWebsite/web/add.jsp</file>
             <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/dal/OrderDAO.java</file>
             <file>file:/D:/ProjectPRJ/MyFirstWebsite/web/cart.jsp</file>
             <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/control/DeleteServlet.java</file>
@@ -30,13 +31,16 @@
             <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/control/NavServlet.java</file>
             <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/control/AddServlet.java</file>
             <file>file:/D:/ProjectPRJ/MyFirstWebsite/web/addProduct.jsp</file>
+            <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/control/OrderDetailAdmin.java</file>
             <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/control/LoginServlet.java</file>
             <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/control/dashboard.java</file>
             <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/control/RegisServlet.java</file>
+            <file>file:/D:/ProjectPRJ/MyFirstWebsite/web/resetPassword.jsp</file>
             <file>file:/D:/ProjectPRJ/MyFirstWebsite/web/dashboard.jsp</file>
             <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/control/addProduct.java</file>
             <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/control/CheckoutServlet.java</file>
             <file>file:/D:/ProjectPRJ/MyFirstWebsite/web/updateProduct.jsp</file>
+            <file>file:/D:/ProjectPRJ/MyFirstWebsite/web/orderDetail.jsp</file>
             <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/control/UpdateProduct.java</file>
             <file>file:/D:/ProjectPRJ/MyFirstWebsite/src/java/control/AddOProduct.java</file>
             <file>file:/D:/ProjectPRJ/MyFirstWebsite/web/addOProduct.jsp</file>
