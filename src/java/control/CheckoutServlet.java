@@ -126,7 +126,8 @@ public class CheckoutServlet extends HttpServlet {
         od.updateTotalMoneyInOrder(order.getId());
         if (user!=null)   cd.deteteCartByUserID(user.getId());
      
-        out.println("xavc nhan ");
+//        out.println("xavc nhan ");
+ response.sendRedirect("success.jsp");
 
     }
 

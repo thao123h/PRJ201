@@ -89,7 +89,7 @@
                     <h4 style="font-size: 1rem; font-weight:bolder;
     margin-left: 34px;
     margin-top: 24px;">${u.fullname}</h4>
-                    <a style="color:black; font-weight: bold; margin-top:18px" href="url" >Lịch sử đơn hàng</a> <br>
+                    <a style="color:black; font-weight: bold; margin-top:18px" href="orderUser" >Đơn hàng</a> <br>
                     <a style="color:black; font-weight: bold" href="url" >Sản phẩm yêu thích</a><br>
                     <a style="color:black; font-weight: bold" href="url" >Thay đổi mật khẩu</a><br>
                     <a style="color:black; font-weight: bold" href="logout" >Đăng xuất</a><br>

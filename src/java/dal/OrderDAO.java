@@ -120,6 +120,23 @@ public class OrderDAO extends DBContext {
         }
         return null;
     }
+    public List<Order> getOrderListByUserID(int userID) {
+        String sql = "select * from Orders where userID = ? order by orderDate desc";
+        UserDAO ud = new UserDAO();
+        List<Order> list = new ArrayList<>();
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, userID);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                list.add( new Order(rs.getInt("id"), ud.getUserByID(rs.getInt("userID")), rs.getInt("status"),
+                        rs.getInt("totalMoney"), rs.getDate("orderDate")));
+            }
+        } catch (Exception e) {
+
+        }
+        return list;
+    }
 
     public void updateTotalMoneyInOrder(int oid) {
         int total = 0;
@@ -195,7 +212,7 @@ public class OrderDAO extends DBContext {
         System.out.println(od.getOrders().size());
 
 //        od.insertIntoOrderDetail(new OrderDetail(0, od.getOrderByUserID(6), pd.getProductByID(8), 0, 0));
-        System.out.println(od.getAllOrderDetals(22).size());
+        System.out.println(od.getOrderListByUserID(6).size());
     }
 //    int id;
 //    Order order;
